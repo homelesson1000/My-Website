@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Study Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #fff, #ffccff, #e0bbff);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .left-section {
+            width: 60%;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .right-section {
+            width: 35%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .right-section img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #8e44ad;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #d291bc;
+            margin-bottom: 10px;
+        }
+
+        /* Styling inputs */
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #ff66cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e055aa;
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Pomodoro Timer */
+        .timer {
+            font-size: 2rem;
+            color: #8e44ad;
+        }
+
+        /* Calculator Styling */
+        .calculator {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .calculator input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Study Dashboard 🎓</h1>
+    <div class="container fade-in">
+        <!-- Left Section with Features -->
+        <div class="left-section">
+            <!-- To-Do List Section -->
+            <div class="section">
+                <h2>To-Do List ✅</h2>
+                <input type="text" id="new-task" placeholder="Add a new task">
+                <button onclick="addTask()">Add Task</button>
+                <ul id="task-list"></ul>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="section">
+                <h2>Notes 📝</h2>
+                <textarea id="note-input" placeholder="Take a note..."></textarea>
+                <button onclick="addNote()">Add Note</button>
+                <ul id="note-list"></ul>
+            </div>
+
+            <!-- Pomodoro Timer Section -->
+            <div class="section">
+                <h2>Pomodoro Timer ⏲️</h2>
+                <div class="timer" id="timer">25:00</div>
+                <button onclick="startTimer()">Start</button>
+                <button onclick="resetTimer()">Reset</button>
+            </div>
+
+            <!-- Image Upload Section -->
+            <div class="section">
+                <h2>Upload Images 🖼️</h2>
+                <input type="file" id="imageUpload" multiple>
+                <div id="imageGallery"></div>
+            </div>
+
+            <!-- Calculator Section -->
+            <div class="section calculator">
+                <h2>Calculator 🧮</h2>
+                <input type="text" id="calculatorInput" placeholder="Enter expression e.g. 2+2">
+                <button onclick="calculate()">Calculate</button>
+                <div id="calcResult"></div>
+            </div>
+        </div>
+
+        <!-- Right Section with Music Player -->
+        <div class="right-section">
+            <img src="https://i.pinimg.com/originals/5f/11/38/5f1138e01a12f80ad21cbce02f1bb69a.jpg" alt="Cute Aesthetic Image">
+            
+            <div class="section">
+                <h2>Music Player 🎶</h2>
+                <audio controls>
+                    <source src="your-music-file.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // To-Do List functionality
+        function addTask() {
+            let task = document.getElementById('new-task').value;
+            if (task) {
+                let li = document.createElement('li');
+                li.textContent = task;
+                document.getElementById('task-list').appendChild(li);
+                document.getElementById('new-task').value = '';
+            }
+        }
+
+        // Notes functionality
+        function addNote() {
+            let note = document.getElementById('note-input').value;
+            if (note) {
+                let li = document.createElement('li');
+                li.textContent = note;
+                document.getElementById('note-list').appendChild(li);
+                document.getElementById('note-input').value = '';
+            }
+        }
+
+        // Pomodoro Timer
+        let timerInterval;
+        let timeLeft = 25 * 60;
+
+        function startTimer() {
+            timerInterval = setInterval(function() {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').textContent = "Time's up!";
+                } else {
+                    timeLeft--;
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = "25:00";
+        }
+
+        // Image Upload Functionality
+        document.getElementById('imageUpload').addEventListener('change', function() {
+            const files = this.files;
+            const gallery = document.getElementById('imageGallery');
+            gallery.innerHTML = '';  // Clear previous images
+            for (const file of files) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.style.width = '100px';
+                img.style.margin = '10px';
+                gallery.appendChild(img);
+            }
+        });
+
+        // Calculator
+        function calculate() {
+            const input = document.getElementById('calculatorInput').value;
+            try {
+                const result = eval(input);
+                document.getElementById('calcResult').textContent = `Result: ${result}`;
+            } catch (error) {
+                document.getElementById('calcResult').textContent = 'Error in expression!';
+            }
+        }
+    </script>
+</body>
+</html>
